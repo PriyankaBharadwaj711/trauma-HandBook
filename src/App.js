@@ -8,24 +8,13 @@ import {BrowserRouter as Router, Switch , Route } from 'react-router-dom'
 function App() {
   return (
     < >
-    {/* <Router>
-
-      <Navbar/>
-      <Switch>
-        <Route path ='/' />
-      </Switch>
-    </Router> */}
+    
       <header className="App-header">
        
-        <p>
+        
            <PersistentDrawerLeft/>
            {/* <TemporaryDrawer/> */}
-
-        </p>
-        
       </header>
-
-      
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme ,fade } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -34,6 +34,7 @@ import { spacing } from '@material-ui/system';
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import getSearchData from './Dedication_data';
 // const ScrollLink = Scroll.ScrollLink
 
 
@@ -118,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(135),
+      //marginLeft: theme.spacing(135),
       width: 'auto',
     },
   },
@@ -156,8 +157,34 @@ export default function PersistentDrawerLeft() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openCollapse, setOpenCollapse] = React.useState(false);
+  var elasticlunr = require('elasticlunr');
+  const [searchData, setSearchData] = useState(null);
+  var index = elasticlunr(function () {
+      this.addField('title');
+      this.addField('body');
+      this.setRef('id');
+  });
+ 
+  function getSearchData(searchData)
+  {
+      console.log(index.search(searchData));
+      console.log(index.search("special"));
+  }
+  var doc1 = {
+    "id": "dedication",
+    "title": "Oracle released its latest database Oracle 12g",
+    "body": "Michele was special. Once you met her, you couldn't imagine a time without her. She had that unique ability to make you feel better about yourself. You liked who you were when you were with her. You missed her when she wasn't around.Her husband Joe posted an entry on face book for her birthday, October 23. When I read it I didn't think that I could do better at describing how Michele affected everyone who came in contact with her and how she approached life. With his permission I am going to share some of what was posted.When confronted with metastatic breast cancer she persevered, choosing to go out on her terms and leaving it all on the field. Rather than be weighed down by sadness, anger, or self-pity, her thoughts and actions remained selfless and positive. She was far less concerned about herself than of how her illness and premature passing would impact everyone else."
+}
+var doc2 = {
+    "id": "traumaProgram",
+    "title": "Oracle released its profit report of 2015",
+    "body": "The CHKD trauma program serves the children of Hampton Roads, Virginia's Eastern Shore and Northeastern North Carolina. As a specialized pediatric medical center, CHKD provides a multi- disciplinary approach to care for injured children for all ranges of acuity and injuries. The commitment to provide care to traumatically injured children and their families extends from the frontline providers to the board of directors. CHKD is currently seeking trauma center verification from the Virginia Department of Health which will allow for pediatric specialists from ED, surgery, ICU and all subspecialties to care for patients directly from the field. The trauma service is staffed by board-certified pediatric surgeons and their support team of physician assistants, nurse practitioners, residents, interns and office staff.The trauma program is led by a board-certified pediatric surgeon who completed a fellowship in trauma. The program is co-managed by a pediatric emergency physician and employs a full-time RN trauma program manager, RN trauma registrar and RN clinical practice educator specialist.The program director chairs the hospital multi-disciplinary trauma PI committee which includes representatives from all the major surgical specialties and services including administration and nursing. The trauma PI committee provides oversight for systems, patient care, quality, policies and procedures to ensure the optimum care of any injured patient is achieved.Trauma is a surgical disease that requires the need for multiple specialty services which CHKD is uniquely qualified to provide. The purpose of this manual is to document established guidelines that ensure an organized and systematic approach to care."
 
-  const handleDrawerOpen = () => {
+}
+index.addDoc(doc1);
+index.addDoc(doc2);
+ 
+const handleDrawerOpen = () => {
     setOpen(true);
   };
 
@@ -179,6 +206,10 @@ export default function PersistentDrawerLeft() {
     window.scroll({ top: topOfElement, behavior: "smooth" });
   };
 
+  //  function twoCalls (event) {
+  //   setSearchData(event.target.value)
+  //   this.getSearchData()
+  // }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -193,19 +224,23 @@ export default function PersistentDrawerLeft() {
           >
             <MenuIcon />
           </IconButton>
-          <img className="photo" src={images_chkdIcon} alt="Logo">
+          <img className="photo" src={images_chkdIcon} alt="Logo" >
             </img>
             <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search.."
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+             // onChange= {twoCalls()}
+              name="search"
+            
+              id="Search"
             />
           </div>
         </Toolbar>
@@ -230,6 +265,7 @@ export default function PersistentDrawerLeft() {
               <ChevronRightIcon style={{ color: "white" }} />
             )}
           </IconButton>
+          <img className="photo" src={images_chkdIcon} alt="Logo"></img>
         </div>
        
        

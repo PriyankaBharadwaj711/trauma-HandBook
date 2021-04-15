@@ -1,12 +1,38 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import Typography from '@material-ui/core/Typography';
-
+//const [output , setOutput]=
+//const [searchData, setSearchData] = useState(null);
 function Dedication() {
+    var elasticlunr = require('elasticlunr');
+    var index = elasticlunr(function () {
+        this.addField('title');
+        this.addField('body');
+        this.setRef('id');
+    });
+   
+
+   function getSearchData(val)
+   {
+       console.log(index.search(val));
+       index.search("Expected profit report");
+   }
+    var doc1 = {
+        "id": 10,
+        "title": "Oracle released its latest database Oracle 12g",
+        "body": "Michele was special. Once you met her, you couldn't imagine a time without her. She had that unique ability to make you feel better about yourself. You liked who you were when you were with her. You missed her when she wasn't around.Her husband Joe posted an entry on face book for her birthday, October 23. When I read it I didn't think that I could do better at describing how Michele affected everyone who came in contact with her and how she approached life. With his permission I am going to share some of what was posted.When confronted with metastatic breast cancer she persevered, choosing to go out on her terms and leaving it all on the field. Rather than be weighed down by sadness, anger, or self-pity, her thoughts and actions remained selfless and positive. She was far less concerned about herself than of how her illness and premature passing would impact everyone else."
+    }
+    var doc2 = {
+        "id": 20,
+        "title": "Oracle released its profit report of 2015",
+        "body": "As expected, Oracle released its profit report of 2015, during the good sales of database and hardware, Oracle's profit of 2015 reached 12.5 Billion."
+    }
+    index.addDoc(doc1);
+    index.addDoc(doc2);
+    // var output = index.search("Expected profit report");
+   //console.log(output[0].ref);   
     return (
         <div >
          <div>
-
-         
             <h6>
             A Deon to Michele Lombardo
             </h6>
@@ -35,7 +61,9 @@ function Dedication() {
             ~ Dr. Ann Kuhn
             </Typography>
             
+            
         </div>
+       
         </div>
 
     )
