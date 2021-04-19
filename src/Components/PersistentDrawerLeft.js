@@ -1,4 +1,4 @@
-import React ,{useState} from 'react';
+import React ,{useState, useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme ,fade } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -116,10 +116,11 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginLeft: 0,
-    width: '100%',
+    float:"right",
+    right:0,
+    // width: '100%',
     [theme.breakpoints.up('sm')]: {
-      //marginLeft: theme.spacing(135),
+      marginLeft: theme.spacing(1),
       width: 'auto',
     },
   },
@@ -148,6 +149,8 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+ 
+  
 
 
 }));
@@ -201,15 +204,49 @@ const handleDrawerOpen = () => {
   let offsetAppBar = 70;
 
   var scrollSmoothHandler = (elementID) => {
+    console.log(elementID)
     var topOfElement =
       document.querySelector(elementID).offsetTop - offsetAppBar;
     window.scroll({ top: topOfElement, behavior: "smooth" });
   };
+  const [search, setSearch] = React.useState('')
 
+  useEffect(() => {
+    if(search != ''){
+      console.log("calling scroll func")
+      scrollSmoothHandler(search)
+    }
+   
+    
+  }, [search])
   //  function twoCalls (event) {
   //   setSearchData(event.target.value)
   //   this.getSearchData()
   // }
+
+
+  const handleChageFunc = (event) => {
+    if(event && event.target ){
+      switch(event.target.name){
+        case "searchField":
+          // setSearch(event.target.value)
+          console.log(index.search(event.target.value))
+          if(index.search(event.target.value).length != 0){
+            let max = 0;
+            index.search(event.target.value).map((eachItem) => {
+              if(eachItem.score > max){
+                max = eachItem.score
+                setSearch("#"+eachItem.ref)
+              }
+            })
+          }
+
+
+        case "field2":
+          console.log(event.target.value)
+      }
+    }
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -231,17 +268,25 @@ const handleDrawerOpen = () => {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search.."
+              placeholder="Search…"
+              name="searchField"
+              onChange={handleChageFunc}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
-             // onChange= {twoCalls()}
-              name="search"
-            
-              id="Search"
             />
+            {/* <InputBase
+              placeholder="Search…"
+              name="field2"
+              onChange={handleChageFunc}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            /> */}
           </div>
         </Toolbar>
       </AppBar>
@@ -321,7 +366,6 @@ const handleDrawerOpen = () => {
         <div className={classes.drawerHeader} />
         <div style={{ paddingLeft: 3, paddingRight: 3 }}>
         <div id="dedication">
-        
         <Dedication />
         </div>
         <div id="traumaProgram">
